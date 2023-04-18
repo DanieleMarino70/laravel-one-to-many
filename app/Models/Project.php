@@ -13,4 +13,9 @@ class Project extends Model
     {
         return substr($this->description, 0, $max) . "...";
     }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
 }
