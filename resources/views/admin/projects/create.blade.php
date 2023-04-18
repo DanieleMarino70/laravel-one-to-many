@@ -29,10 +29,10 @@
 
             <div class="mb-3">
                 <label for="type">Tipo</label>
-                <select id="type" name="type" class="form-select">
+                <select id="type" name="type" class="form-select" >
                     <option value="">Nessun Tipo</option>
                     @foreach ($types as $type)
-                    <option value="{{$type->id}}">{{$type->label}}</option>
+                    <option @if (old('type', $project->type_id) == $type->id) selected @endif value="{{$type->id}}">{{$type->label}}</option>
                     @endforeach
                 </select>
             </div>
