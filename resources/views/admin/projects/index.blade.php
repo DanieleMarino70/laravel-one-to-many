@@ -12,6 +12,7 @@
                     <thead>
                         <tr>
                         <th scope="col">ID</th>
+                        <th scope="col">TIPO</th>
                         <th scope="col">TITOLO</th>
                         <th scope="col">DESCRIZIONE</th>
                         <th scope="col">AUTORE</th>
@@ -22,6 +23,7 @@
                         @forelse ($projects as $project)
                         <tr>
                             <th scope="row">{{ $project->id}}</th>
+                            <td>{{ $project->type?->label}}</td>
                             <td>{{ $project->title}}</td>
                             <td>{{ $project->description}}</td>
                             <td>{{ $project->author}}</td>

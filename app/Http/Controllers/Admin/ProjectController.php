@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $types = Type::all();
+        return view('admin.projects.create', compact('types'));
     }
 
     /**
@@ -43,7 +45,8 @@ class ProjectController extends Controller
             'title' => 'required|string|max:100',
             'description' => 'required|',
             'author' => 'required|string|max:100',
-            'cover_image' => 'nullable|image|mimes:jpg,png,jpeg'
+            'cover_image' => 'nullable|image|mimes:jpg,png,jpeg',
+            'type_id' => 'nullable|exists:types,id'
         ], [
             'title.required' => 'il titolo è obbligatorio',
             'title.max' => 'il titolo deve essere massimo di 100 caratteri',
@@ -52,6 +55,7 @@ class ProjectController extends Controller
             'author.max' => 'il nome dell\'autore deve essere massimo di 100 caratteri',
             'cover_image.image' => 'il file deve essere un\'immagine',
             'cover_image.mimes' => 'il file deve essere di tipo jpeg, jpg, png.',
+            'type_id.exists' => 'id del tipo non è valido'
 
         ]);
 
@@ -59,6 +63,8 @@ class ProjectController extends Controller
 
         if (Arr::exists($data, 'cover_image')) {
             $img_path = Storage::put('uploads/projects', $data['cover_image']);
+        } else {
+            $img_path = Null;
         }
 
         $project = new Project;
@@ -66,6 +72,7 @@ class ProjectController extends Controller
         $project->description = $data['description'];
         $project->author = $data['author'];
         $project->cover_image = $img_path;
+        $project->type_id = $data['type'];
         $project->save();
         return redirect()->route('projects.show', compact('project'));
     }
@@ -89,7 +96,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
@@ -105,7 +113,8 @@ class ProjectController extends Controller
             'title' => 'required|string|max:100',
             'description' => 'required|',
             'author' => 'required|string|max:100',
-            'cover_image' => 'nullable|image|mimes:jpg,png,jpeg'
+            'cover_image' => 'nullable|image|mimes:jpg,png,jpeg',
+            'type_id' => 'nullable|exists:types,id'
         ], [
             'title.required' => 'il titolo è obbligatorio',
             'title.max' => 'il titolo deve essere massimo di 100 caratteri',
@@ -114,6 +123,7 @@ class ProjectController extends Controller
             'author.max' => 'il nome dell\'autore deve essere massimo di 100 caratteri',
             'cover_image.image' => 'il file deve essere un\'immagine',
             'cover_image.mimes' => 'il file deve essere di tipo jpeg, jpg, png.',
+            'type_id.exists' => 'id del tipo non è valido'
 
         ]);
 
@@ -121,6 +131,7 @@ class ProjectController extends Controller
         $project->title = $data['title'];
         $project->description = $data['description'];
         $project->author = $data['author'];
+        $project->type_id = $data['type'];
         $project->save();
 
         return redirect()->route('projects.show', $project);

@@ -28,6 +28,16 @@
             </div>
 
             <div class="mb-3">
+                <label for="type">Tipo</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Nessun Tipo</option>
+                    @foreach ($types as $type)
+                    <option value="{{$type->id}}">{{$type->label}}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label for="cover_image" class="form-label">Inserisci un immagine</label>
                 <input class="form-control" type="file" id="cover_image" name="cover_image">
             </div>

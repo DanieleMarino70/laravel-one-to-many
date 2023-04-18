@@ -27,7 +27,17 @@
                 <label for="author" class="form-label">Autore</label>
                 <input type="text" class="form-control" id="author" name="author" placeholder="Nome Autore" value="{{$project->author}}">
             </div>
-            
+
+            <div class="mb-3">
+                <label for="type">Tipo</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Nessun Tipo</option>
+                    @foreach ($types as $type)
+                    <option value="{{$type->id}}">{{$type->label}}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="mb-3">
                 <label for="album" class="form-label">Descrizione</label>
                 <textarea type="text" class="form-control" id="description" name="description" placeholder="Descrizione">{{$project->description}}</textarea>
